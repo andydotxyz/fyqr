@@ -25,6 +25,7 @@ func main() {
 
 	out := &canvas.Image{}
 	out.ScaleMode = canvas.ImageScalePixels
+	out.FillMode = canvas.ImageFillContain
 	out.SetMinSize(fyne.NewSquareSize(256))
 
 	save := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {
