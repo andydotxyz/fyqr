@@ -9,7 +9,6 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 
@@ -31,7 +30,7 @@ func main() {
 	save := widget.NewButtonWithIcon("", theme.DocumentSaveIcon(), func() {
 		write(out.Image, w)
 	})
-	save.Hide()
+	save.Disable()
 
 	run := widget.NewButtonWithIcon("", theme.NavigateNextIcon(), func() {
 		img, err := gen(in.Text)
@@ -40,23 +39,22 @@ func main() {
 
 			out.Image = nil
 			out.Refresh()
-			save.Hide()
+			save.Disable()
 
 			return
 		}
 
 		out.Image = img
 		out.Refresh()
-		save.Show()
+		save.Enable()
 	})
 	in.OnSubmitted = func(_ string) {
 		run.OnTapped()
 	}
 
-	top := container.NewBorder(nil, nil, nil, run, in)
+	top := container.NewBorder(nil, nil, nil, container.NewHBox(run, save), in)
+	ui := container.NewBorder(top, nil, nil, nil, out)
 
-	output := container.NewStack(out, container.NewVBox(container.NewHBox(layout.NewSpacer(), save)))
-	ui := container.NewBorder(top, nil, nil, nil, output)
 	w.SetContent(ui)
 	w.ShowAndRun()
 }
